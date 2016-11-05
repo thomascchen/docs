@@ -15,5 +15,6 @@ defmodule Docs.Document do
     struct
     |> cast(params, [:body, :title])
     |> validate_required([:body, :title])
+    |> validate_length(:title, min: 3)
   end
 end
