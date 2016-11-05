@@ -3,7 +3,3 @@
 #editor {
   min-height: 400px;
 }
-
-div:focus {
-  outline: 0px;
-}
