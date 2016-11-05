@@ -31,7 +31,18 @@ let App = {
 
     let docChan = socket.channel("documents:" + docId);
 
+    docChan.on("text_change", ({delta}) => {
+      editor.updateContents(delta)
+    })
+
     // push some events
+    editor.on("text-change", (delta, oldDelta, source) => {
+      if (source !== "user") {
+        return;
+      } else {
+        docChan.push("text_change", {delta: delta});
+      }
+    });
 
     docChan.join()
       .receive("ok", resp => console.log("joined!", resp) )
