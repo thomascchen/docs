@@ -66,6 +66,8 @@ defmodule Docs.Web do
       use Phoenix.Channel
 
       alias Docs.Repo
+      alias Docs.Message
+      alias Docs.Document
       import Ecto
       import Ecto.Query
       import Docs.Gettext

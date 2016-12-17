@@ -61,13 +61,15 @@ let App = {
     });
 
     docChan.join()
-      .receive("ok", resp => console.log("joined!", resp) )
+      .receive("ok", ({messages}) => {
+        messages.forEach( msg => this.appendMessage(msgContainer, msg))
+      })
       .receive("error", resp => console.log("error!", resp) )
   },
 
   appendMessage(msgContainer, msg) {
     msgContainer.append(`<br/>${msg.body}`);
-    msgContainer.scrollTop(msgContainer.props("scrollHeight"));
+    msgContainer.scrollTop(msgContainer.prop("scrollHeight"));
   }
 }
 
