@@ -3,3 +3,10 @@
 #editor {
   min-height: 400px;
 }
+
+#messages {
+  min-height: 400px;
+  max-height: 400px;
+  overflow: scroll;
+  border: 1px solid darkgray;
+}

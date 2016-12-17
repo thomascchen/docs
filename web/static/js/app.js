@@ -27,13 +27,20 @@ let App = {
     let socket = new Socket("/socket");
     let editor = new Quill("#editor");
     let docId = $("#editor").data("id");
+    let msgContainer = $("#messages");
+    let msgInput = $("#message-input");
+
     socket.connect();
 
     let docChan = socket.channel("documents:" + docId);
 
     docChan.on("text_change", ({delta}) => {
       editor.updateContents(delta)
-    })
+    });
+
+    docChan.on("new_msg", msg => {
+      this.appendMessage(msgContainer, msg)
+    });
 
     // push some events
     editor.on("text-change", (delta, oldDelta, source) => {
@@ -44,9 +51,23 @@ let App = {
       }
     });
 
+    msgInput.on("keypress", e => {
+      if(e.which !== 13) {
+        return;
+      } else {
+        docChan.push("new_msg", {body: msgInput.val()});
+        msgInput.val("");
+      }
+    });
+
     docChan.join()
       .receive("ok", resp => console.log("joined!", resp) )
       .receive("error", resp => console.log("error!", resp) )
+  },
+
+  appendMessage(msgContainer, msg) {
+    msgContainer.append(`<br/>${msg.body}`);
+    msgContainer.scrollTop(msgContainer.props("scrollHeight"));
   }
 }
 

@@ -15,7 +15,6 @@ defmodule Docs.DocumentController do
 
   def create(conn, %{"document" => document_params}) do
     changeset = Document.changeset(%Document{}, document_params)
-
     case Repo.insert(changeset) do
       {:ok, _document} ->
         conn
